@@ -18,8 +18,7 @@ export async function GET() {
   }
   
   bingos.push(bingo)
-
-  return new Response(JSON.stringify({ bingo: bingo }), {
+  return new Response(JSON.stringify({ bingo: bingo, bingos: bingos }), {
     headers: {
       'Content-Type': 'application/json',
     },
@@ -27,6 +26,6 @@ export async function GET() {
 }
 
 function arbitraryRandom(min: number, max: number) {
-  const arbitrary_random = Math.random() * (max - min) + min
+  const arbitrary_random = Math.random() * (max - min + 1) + min
   return Math.floor(arbitrary_random)
 }
