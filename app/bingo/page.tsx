@@ -1,7 +1,7 @@
-export default function Home() {
+export default function Bingo() {
   return (
     <div className="flex">
-      Home
+      Bingo
     </div>
   );
 }
