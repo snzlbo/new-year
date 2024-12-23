@@ -1,7 +1,7 @@
 export default function Home() {
   return (
     <div className="flex">
-      Index
+      Greetings
     </div>
   );
 }
