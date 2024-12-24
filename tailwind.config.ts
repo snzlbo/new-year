@@ -1,5 +1,7 @@
 import type { Config } from "tailwindcss";
+import tailwindcssAnimate from "tailwindcss-animate";
 
+/** @type {import('tailwindcss').Config} */
 export default {
     darkMode: ["class"],
     content: [
@@ -9,6 +11,9 @@ export default {
   ],
   theme: {
   	extend: {
+			gridTemplateColumns: {
+				'15': 'repeat(15, minmax(0, 1fr))'
+			},
   		colors: {
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
@@ -57,6 +62,6 @@ export default {
   			sm: 'calc(var(--radius) - 4px)'
   		}
   	}
-  },
-  plugins: [require("tailwindcss-animate")],
+	},
+  plugins: [tailwindcssAnimate],
 } satisfies Config;
