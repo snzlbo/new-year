@@ -1,20 +1,22 @@
-'use client'
-import { useState } from 'react'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { toast } from 'sonner'
-import { Amplify } from 'aws-amplify'
-import { generateClient } from 'aws-amplify/api'
-import { createLogs } from '@/lib/graphql/mutations'
-import awsmobile from '@/aws-exports'
-
-Amplify.configure(awsmobile)
-const client = generateClient()
+"use client";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { toast } from "sonner";
+import { Amplify } from "aws-amplify";
+import { generateClient } from "aws-amplify/api";
+import { createLogs } from "@/lib/graphql/mutations";
+import awsmobile from "@/aws-exports";
+import LanguageToggle from "@/components/langToggler";
+import { useTranslation } from "../context/TranslationContext";
+import { TYPE } from "@/types/API";
+Amplify.configure(awsmobile);
+const client = generateClient();
 
 export default function Greetings() {
-  const [name, setName] = useState('')
-  const [isSubmitting, setIsSubmitting] = useState(false)
-
+  const [name, setName] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { t } = useTranslation();
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
@@ -30,10 +32,11 @@ export default function Greetings() {
         query: createLogs,
         variables: {
           input: {
-            username: name,
-          },
-        },
-      })
+            type: TYPE.new_year,
+            username: name
+          }
+        }
+      });
 
       const speech = await fetch(
         'https://quvajuy6na.execute-api.ap-northeast-1.amazonaws.com/generate_speech',
@@ -65,12 +68,16 @@ export default function Greetings() {
 
   return (
     <div className="relative h-screen flex flex-col items-center justify-center w-full px-4 bg-black">
+      <div className="absolute top-4 right-4 z-50">
+        <LanguageToggle />
+      </div>
+
       <div className="w-full max-w-md mx-auto text-center mb-8">
         <h1 className="text-4xl font-bold text-white mb-2 drop-shadow-lg animate__animated animate__bounceInDown">
-          Happy New Year
+          {t("title")}
         </h1>
         <p className="text-2xl font-bold text-white mb-6 animate__animated animate__backInLeft">
-          DDAM ALL 🎉
+          {t("subtitle")}
         </p>
       </div>
 
@@ -80,11 +87,13 @@ export default function Greetings() {
           className="space-y-6 p-6 bg-white/10 backdrop-blur-sm rounded-lg"
         >
           <div className="space-y-2">
-            <label className="text-xl text-white font-medium">Your Name</label>
+            <label className="text-xl text-white font-medium">
+              {t("nameLabel")}
+            </label>
             <Input
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="Enter your name (min. 3 characters)"
+              placeholder={t("namePlaceholder")}
               className="bg-white/20 border-white/20 text-white placeholder:text-white/70"
               required
               minLength={3}
@@ -92,9 +101,7 @@ export default function Greetings() {
           </div>
 
           <div>
-            <p className="text-lg text-white text-center">
-              Send your wishes to everyone!
-            </p>
+            <p className="text-lg text-white text-center">{t("wishText")}</p>
           </div>
 
           <Button
