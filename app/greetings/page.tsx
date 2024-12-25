@@ -1,36 +1,39 @@
-"use client";
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+'use client'
+import { Icon } from '@iconify/react'
+import { useState } from 'react'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue
-} from "@/components/ui/select";
-import { toast } from "sonner";
-import { Amplify } from "aws-amplify";
-import { generateClient } from "aws-amplify/api";
-import { createLogs } from "@/lib/graphql/mutations";
-import awsmobile from "@/aws-exports";
-import { useTranslation } from "../context/TranslationContext";
-import { TYPE } from "@/types/API";
+  SelectValue,
+} from '@/components/ui/select'
+import { toast } from 'sonner'
+import { Amplify } from 'aws-amplify'
+import { generateClient } from 'aws-amplify/api'
+import { createLogs } from '@/lib/graphql/mutations'
+import awsmobile from '@/aws-exports'
+import { useTranslation } from '../context/TranslationContext'
+import { TYPE } from '@/types/API'
+import { ThemeProvider } from '@/components/ThemeProvider'
+import { BackgroundBeams } from '@/components/background-beam'
 
-Amplify.configure(awsmobile);
-const client = generateClient();
+Amplify.configure(awsmobile)
+const client = generateClient()
 
 export default function Greetings() {
-  const [name, setName] = useState("");
-  const [inputLanguage, setInputLanguage] = useState("EN");
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const { t } = useTranslation();
-  const { language, setLanguage } = useTranslation();
+  const [name, setName] = useState('')
+  const [inputLanguage, setInputLanguage] = useState<'en' | 'ja'>('en')
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const { t } = useTranslation()
+  const { language, setLanguage } = useTranslation()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
-    if (name.length < 3) {
+    if (name.length < 1) {
       toast.error('Name must be at least 3 characters')
       return
     }
@@ -44,10 +47,10 @@ export default function Greetings() {
           input: {
             type: TYPE.new_year,
             username: name,
-            language: inputLanguage
-          }
-        }
-      });
+            language: inputLanguage,
+          },
+        },
+      })
 
       const speech = await fetch(
         'https://quvajuy6na.execute-api.ap-northeast-1.amazonaws.com/generate_speech',
@@ -61,13 +64,9 @@ export default function Greetings() {
           }),
         }
       )
-      console.log(speech.json())
-
       if (!speech.ok) {
         throw new Error('Speech generation failed')
       }
-
-      toast.success('Successfully sent! 🎉')
       setName('')
     } catch (error) {
       console.error(error)
@@ -78,64 +77,76 @@ export default function Greetings() {
   }
 
   return (
-    <div className="relative h-screen flex flex-col items-center justify-center w-full px-4 bg-black">
-      <div className="w-full max-w-md mx-auto text-center mb-8">
-        <h1 className="text-4xl font-bold text-white mb-2 drop-shadow-lg animate__animated animate__bounceInDown">
-          {t("title")}
-        </h1>
-        <p className="text-2xl font-bold text-white mb-6 animate__animated animate__backInLeft">
-          {t("subtitle")}
-        </p>
-      </div>
+    <ThemeProvider
+      attribute="class"
+      defaultTheme="dark"
+      enableSystem
+      disableTransitionOnChange
+    >
+      <div className="relative max-h-screen h-screen flex flex-col items-center pt-24 w-full px-4 z-40">
+        <div className="w-full max-w-md mx-auto text-center mb-8">
+          <h1 className="text-4xl font-bold mb-2 drop-shadow-lg animate__animated animate__bounceInDown">
+            {t('title')}
+          </h1>
+          <p className="text-2xl font-bold mb-6 animate__animated animate__backInLeft">
+            {t('subtitle')}
+          </p>
+        </div>
 
-      <div className="w-full max-w-sm mx-auto">
-        <form
-          onSubmit={handleSubmit}
-          className="space-y-6 p-6 bg-white/10 backdrop-blur-sm rounded-lg"
-        >
-          <div className="space-y-2">
-            <label className="text-xl text-white font-medium">
-              {t("nameLabel")}
-            </label>
-            <Input
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder={t("namePlaceholder")}
-              className="bg-white/20 border-white/20 text-white placeholder:text-white/70"
-              required
-              minLength={3}
-            />
-          </div>
-          <div className="space-y-2">
-            <label className="text-xl text-white font-medium">
-              {t("languageLabel")}
-            </label>
-            <Select value={inputLanguage} onValueChange={setInputLanguage}>
-              <SelectTrigger className="bg-white/20 border-white/20 text-white">
-                <SelectValue placeholder="Select Language" />
-              </SelectTrigger>
-              <SelectContent
-                onClick={() => setLanguage(language === "EN" ? "JP" : "EN")}
-              >
-                <SelectItem value="EN">English</SelectItem>
-                <SelectItem value="JA">Japanese</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div>
-            <p className="text-lg text-white text-center">{t("wishText")}</p>
-          </div>
-
-          <Button
-            type="submit"
-            disabled={isSubmitting || name.length < 3}
-            className="w-full bg-blue-500/75 hover:bg-blue-500/90 text-white border border-white/50"
+        <div className="w-full max-w-sm mx-auto">
+          <form
+            onSubmit={handleSubmit}
+            className="space-y-6 p-6 bg-white/10 backdrop-blur-sm rounded-lg"
           >
-            {isSubmitting ? '...' : 'Submit'}
-          </Button>
-        </form>
+            <div className="space-y-2">
+              <Input
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder={t('namePlaceholder')}
+                required
+                minLength={3}
+              />
+            </div>
+            <div className="space-y-2">
+              <Select
+                defaultValue={inputLanguage}
+                onValueChange={(value) => {
+                  setInputLanguage(value as 'en' | 'ja')
+                }}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select Language" />
+                </SelectTrigger>
+                <SelectContent
+                  onClick={() => setLanguage(language === 'EN' ? 'JP' : 'EN')}
+                >
+                  <SelectItem value="ja">
+                    <div className="flex items-center space-x-2">
+                      <Icon icon="emojione:flag-for-japan" />
+                      <div>日本語</div>
+                    </div>
+                  </SelectItem>
+                  <SelectItem value="en">
+                    <div className="flex items-center space-x-2">
+                      <Icon icon="emojione:flag-for-united-states" />
+                      <div>English</div>
+                    </div>
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            {/* <p className="text-lg text-white text-center">{t('wishText')}</p> */}
+            <Button
+              type="submit"
+              className="w-full"
+              disabled={isSubmitting || name.length < 3}
+            >
+              {isSubmitting ? '...' : 'Submit'}
+            </Button>
+          </form>
+        </div>
       </div>
-    </div>
+      <BackgroundBeams />
+    </ThemeProvider>
   )
 }

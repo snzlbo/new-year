@@ -1,14 +1,15 @@
 'use client'
 import { Logs, STATUS, TYPE } from '@/types/API'
-import { useEffect, useState } from 'react'
 import Image from 'next/image'
+import { useEffect, useState } from 'react'
 
 import awsmobile from '@/aws-exports'
-import { getLogs, logByDate } from '@/lib/graphql/queries'
+import { updateLogs } from '@/lib/graphql/mutations'
+import { logByDate } from '@/lib/graphql/queries'
 import { onUpdateLogs } from '@/lib/graphql/subscriptions'
 import { Amplify } from 'aws-amplify'
 import { generateClient } from 'aws-amplify/api'
-import { updateLogs } from '@/lib/graphql/mutations'
+import { ThemeProvider } from '@/components/ThemeProvider'
 
 Amplify.configure(awsmobile)
 const client = generateClient()
@@ -89,22 +90,26 @@ export default function GreetingsDisplayPage() {
   }, [items])
 
   return (
-    <div className="grid grid-cols-3 max-h-screen max-w-7xl gap-4 mx-auto justify-center items-center">
-      <video
-        className="col-span-2 max-h-screen"
-        src="/pro.mp4"
-        autoPlay
-        controls
-        loop
-      />
-      <div className="flex flex-col items-center space-y-8">
-        <span className="text-2xl font-bold text-white">
-          Some Cringe Slogan here
-        </span>
-        <div className="p-2 size-auto rounded-2xl border border-white">
-          <Image src="/qr.svg" alt="qr" width={500} height={500} />
+    <ThemeProvider
+      attribute="class"
+      defaultTheme="dark"
+      enableSystem
+      disableTransitionOnChange
+    >
+      <div className="grid grid-cols-3 max-h-screen max-w-7xl gap-4 mx-auto justify-center items-center">
+        <video
+          className="col-span-2 w-full aspect-auto max-h-screen"
+          src="/DAMUJIN_VIDEO1.mp4"
+          autoPlay
+          loop
+        />
+        <div className="flex flex-col items-center space-y-8">
+          <span className="text-2xl font-bold">Scan here to greet us</span>
+          <div className="p-2 size-auto rounded-2xl border border-border">
+            <Image src="/qr.svg" alt="qr" width={500} height={500} />
+          </div>
         </div>
       </div>
-    </div>
+    </ThemeProvider>
   )
 }
