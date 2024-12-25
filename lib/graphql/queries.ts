@@ -1,12 +1,12 @@
 /* tslint:disable */
-/* eslint-disable */
+
 // this is an auto generated file. This will be overwritten
 
-import * as APITypes from "../API";
+import * as APITypes from '../API'
 type GeneratedQuery<InputType, OutputType> = string & {
-  __generatedQueryInput: InputType;
-  __generatedQueryOutput: OutputType;
-};
+  __generatedQueryInput: InputType
+  __generatedQueryOutput: OutputType
+}
 
 export const getLogs = /* GraphQL */ `query GetLogs($id: ID!) {
   getLogs(id: $id) {
@@ -24,8 +24,9 @@ export const getLogs = /* GraphQL */ `query GetLogs($id: ID!) {
     __typename
   }
 }
-` as GeneratedQuery<APITypes.GetLogsQueryVariables, APITypes.GetLogsQuery>;
-export const listLogs = /* GraphQL */ `query ListLogs($filter: ModelLogsFilterInput, $limit: Int, $nextToken: String) {
+` as GeneratedQuery<APITypes.GetLogsQueryVariables, APITypes.GetLogsQuery>
+export const listLogs =
+  /* GraphQL */ `query ListLogs($filter: ModelLogsFilterInput, $limit: Int, $nextToken: String) {
   listLogs(filter: $filter, limit: $limit, nextToken: $nextToken) {
     items {
       id
@@ -45,7 +46,7 @@ export const listLogs = /* GraphQL */ `query ListLogs($filter: ModelLogsFilterIn
     __typename
   }
 }
-` as GeneratedQuery<APITypes.ListLogsQueryVariables, APITypes.ListLogsQuery>;
+` as GeneratedQuery<APITypes.ListLogsQueryVariables, APITypes.ListLogsQuery>
 export const logByDate = /* GraphQL */ `query LogByDate(
   $type: TYPE!
   $createdAt: ModelStringKeyConditionInput
@@ -80,4 +81,4 @@ export const logByDate = /* GraphQL */ `query LogByDate(
     __typename
   }
 }
-` as GeneratedQuery<APITypes.LogByDateQueryVariables, APITypes.LogByDateQuery>;
+` as GeneratedQuery<APITypes.LogByDateQueryVariables, APITypes.LogByDateQuery>

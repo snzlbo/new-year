@@ -1,67 +1,67 @@
-"use client";
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { toast } from "sonner";
-import { Amplify } from "aws-amplify";
-import { generateClient } from "aws-amplify/api";
-import { createLogs } from "@/lib/graphql/mutations";
-import awsmobile from "@/aws-exports";
+'use client'
+import { useState } from 'react'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { toast } from 'sonner'
+import { Amplify } from 'aws-amplify'
+import { generateClient } from 'aws-amplify/api'
+import { createLogs } from '@/lib/graphql/mutations'
+import awsmobile from '@/aws-exports'
 
-Amplify.configure(awsmobile);
-const client = generateClient();
+Amplify.configure(awsmobile)
+const client = generateClient()
 
 export default function Greetings() {
-  const [name, setName] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [name, setName] = useState('')
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+    e.preventDefault()
 
     if (name.length < 3) {
-      toast.error("Name must be at least 3 characters");
-      return;
+      toast.error('Name must be at least 3 characters')
+      return
     }
 
-    setIsSubmitting(true);
+    setIsSubmitting(true)
 
     try {
       const resp = await client.graphql({
         query: createLogs,
         variables: {
           input: {
-            username: name
-          }
-        }
-      });
+            username: name,
+          },
+        },
+      })
 
       const speech = await fetch(
-        "https://quvajuy6na.execute-api.ap-northeast-1.amazonaws.com/generate_speech",
+        'https://quvajuy6na.execute-api.ap-northeast-1.amazonaws.com/generate_speech',
         {
-          method: "POST",
+          method: 'POST',
           headers: {
-            "Content-Type": "application/json"
+            'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            id: resp.data.createLogs.id
-          })
+            id: resp.data.createLogs.id,
+          }),
         }
-      );
-      console.log(speech.json());
+      )
+      console.log(speech.json())
 
       if (!speech.ok) {
-        throw new Error("Speech generation failed");
+        throw new Error('Speech generation failed')
       }
 
-      toast.success("Successfully sent! 🎉");
-      setName("");
+      toast.success('Successfully sent! 🎉')
+      setName('')
     } catch (error) {
-      console.error(error);
-      toast.error("Failed to submit");
+      console.error(error)
+      toast.error('Failed to submit')
     } finally {
-      setIsSubmitting(false);
+      setIsSubmitting(false)
     }
-  };
+  }
 
   return (
     <div className="relative h-screen flex flex-col items-center justify-center w-full px-4 bg-black">
@@ -102,10 +102,10 @@ export default function Greetings() {
             disabled={isSubmitting || name.length < 3}
             className="w-full bg-blue-500/75 hover:bg-blue-500/90 text-white border border-white/50"
           >
-            {isSubmitting ? "..." : "Submit"}
+            {isSubmitting ? '...' : 'Submit'}
           </Button>
         </form>
       </div>
     </div>
-  );
+  )
 }
