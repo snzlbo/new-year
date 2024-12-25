@@ -44,7 +44,7 @@ export default function Greetings() {
           },
           body: JSON.stringify({
             id: resp.data.createLogs.id,
-            username: resp.data.createLogs.name
+            username: resp.data.createLogs.username
           })
         }
       );
