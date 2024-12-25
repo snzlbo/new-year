@@ -1,32 +1,98 @@
 'use client'
-import { useLogApi } from '@/lib/logs'
-import { DeviceUUID } from 'device-uuid'
-import { useEffect } from 'react'
-import { TYPE } from '@/types/API'
+import { Logs, TYPE } from '@/types/API'
+import { useEffect, useState } from 'react'
+
+import awsmobile from '@/aws-exports'
+import { getLogs, logByDate } from '@/lib/graphql/queries'
+import { onUpdateLogs } from '@/lib/graphql/subscriptions'
+import { Amplify } from 'aws-amplify'
+import { generateClient } from 'aws-amplify/api'
+
+Amplify.configure(awsmobile)
+const client = generateClient()
 
 export default function GreetingsDisplayPage() {
-  const { isMobile } = new DeviceUUID().parse()
-  const deviceId = new DeviceUUID().get()
-  console.log(isMobile, deviceId)
-  const { list, onUpdate } = useLogApi()
+  const [items, setItems] = useState<Logs[]>([])
+
+  const list = async () => {
+    const { data } = await client.graphql({
+      query: logByDate,
+      variables: {
+        type: TYPE.new_year,
+        filter: {
+          status: {
+            eq: 'not_played',
+          },
+        },
+      },
+    })
+    setItems(data.logByDate.items)
+  }
+
+  const get = async (id: string) => {
+    const { data } = await client.graphql({
+      query: getLogs,
+      variables: id,
+    })
+    setItems((prevItems) => [...prevItems, data.getLogs])
+  }
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await list({
-        type: TYPE.new_year,
-      })
-      if (!response?.items) {
-        return
-      }
-      for (const item of response.items) {
-        if (item?.id) {
-          onUpdate(item.id)
-        }
-      }
-      console.log('🚀 ~ fetchData ~ response:', response)
+      await list()
     }
     fetchData()
-  }, [list, onUpdate])
+  }, [])
 
-  return <div className="flex">Greetings Display</div>
+  useEffect(() => {
+    const fetchData = async () => {
+      for (const item of items) {
+        client
+          .graphql({
+            query: onUpdateLogs,
+            variables: { filter: { id: { eq: item.id } } },
+          })
+          .subscribe({
+            next: ({ data }) => {
+              if (data && data.onUpdateLogs) {
+                get(item.id)
+              }
+            },
+            error: (error) => {
+              console.error('Subscription error:', error)
+            },
+            complete: () => {
+              console.log('Subscription complete')
+            },
+          })
+      }
+    }
+    fetchData()
+  }, [items])
+
+  const playAudio = () => {
+    if (items.length > 0) {
+      const audioFile = items[items.length - 1].audioFile
+      if (audioFile) {
+        const audio = new Audio(audioFile)
+        audio.play()
+      }
+    }
+  }
+
+  return (
+    <div className="flex bg-background">
+      <div className="hidden">
+        <button className="hidden" onClick={playAudio}>
+          Play Audio
+        </button>
+        {items.map((item) => (
+          <audio key={item.id} controls>
+            <source src={item.audioFile ?? undefined} type="audio/mpeg" />
+            Your browser does not support the audio element.
+          </audio>
+        ))}
+      </div>
+    </div>
+  )
 }
