@@ -11,6 +11,8 @@ export interface TranslationContent {
   successThankYou: string;
   toastSuccess: string;
   toastError: string;
+  languageLabel: string;
+  languagePlaceholder: string;
 }
 
 export const translations: Record<string, TranslationContent> = {
@@ -22,9 +24,11 @@ export const translations: Record<string, TranslationContent> = {
     wishText: "Wish big, from the heart! ❤️",
     submitButton: "Submit",
     successMessage: "Form sent!",
+    languageLabel: "Language",
     successThankYou: "Thanks a bunch! 🎉",
     toastSuccess: "Successfully sent!",
-    toastError: "Please enter your name!"
+    toastError: "Please enter your name!",
+    languagePlaceholder: "Enter your language"
   },
   JP: {
     title: "新年明けましておめでとう",
@@ -34,8 +38,10 @@ export const translations: Record<string, TranslationContent> = {
     wishText: "心を込めて、大きな願いを ❤️",
     submitButton: "送信",
     successMessage: "フォームが送信されました！",
+    languageLabel: "言語",
     successThankYou: "ありがとうございます！🎉 ",
     toastSuccess: "送信が成功しました。",
-    toastError: "お名前を入力してください。"
+    toastError: "お名前を入力してください。",
+    languagePlaceholder: "言語を入力してください"
   }
 };

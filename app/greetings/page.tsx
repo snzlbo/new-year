@@ -2,21 +2,31 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from "@/components/ui/select";
 import { toast } from "sonner";
 import { Amplify } from "aws-amplify";
 import { generateClient } from "aws-amplify/api";
 import { createLogs } from "@/lib/graphql/mutations";
 import awsmobile from "@/aws-exports";
-import LanguageToggle from "@/components/langToggler";
 import { useTranslation } from "../context/TranslationContext";
 import { TYPE } from "@/types/API";
+
 Amplify.configure(awsmobile);
 const client = generateClient();
 
 export default function Greetings() {
   const [name, setName] = useState("");
+  const [inputLanguage, setInputLanguage] = useState("EN");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { t } = useTranslation();
+  const { language, setLanguage } = useTranslation();
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
@@ -33,7 +43,8 @@ export default function Greetings() {
         variables: {
           input: {
             type: TYPE.new_year,
-            username: name
+            username: name,
+            language: inputLanguage
           }
         }
       });
@@ -68,10 +79,6 @@ export default function Greetings() {
 
   return (
     <div className="relative h-screen flex flex-col items-center justify-center w-full px-4 bg-black">
-      <div className="absolute top-4 right-4 z-50">
-        <LanguageToggle />
-      </div>
-
       <div className="w-full max-w-md mx-auto text-center mb-8">
         <h1 className="text-4xl font-bold text-white mb-2 drop-shadow-lg animate__animated animate__bounceInDown">
           {t("title")}
@@ -98,6 +105,22 @@ export default function Greetings() {
               required
               minLength={3}
             />
+          </div>
+          <div className="space-y-2">
+            <label className="text-xl text-white font-medium">
+              {t("languageLabel")}
+            </label>
+            <Select value={inputLanguage} onValueChange={setInputLanguage}>
+              <SelectTrigger className="bg-white/20 border-white/20 text-white">
+                <SelectValue placeholder="Select Language" />
+              </SelectTrigger>
+              <SelectContent
+                onClick={() => setLanguage(language === "EN" ? "JP" : "EN")}
+              >
+                <SelectItem value="EN">English</SelectItem>
+                <SelectItem value="JA">Japanese</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
 
           <div>
