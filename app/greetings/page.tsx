@@ -9,6 +9,7 @@ import { createLogs } from "@/lib/graphql/mutations";
 import awsmobile from "@/aws-exports";
 import LanguageToggle from "@/components/langToggler";
 import { useTranslation } from "../context/TranslationContext";
+import { TYPE } from "@/types/API";
 Amplify.configure(awsmobile);
 const client = generateClient();
 
@@ -31,6 +32,7 @@ export default function Greetings() {
         query: createLogs,
         variables: {
           input: {
+            type: TYPE.new_year,
             username: name
           }
         }
