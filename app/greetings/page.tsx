@@ -43,8 +43,7 @@ export default function Greetings() {
             "Content-Type": "application/json"
           },
           body: JSON.stringify({
-            id: resp.data.createLogs.id,
-            username: resp.data.createLogs.username
+            id: resp.data.createLogs.id
           })
         }
       );
