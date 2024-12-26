@@ -195,13 +195,13 @@ export default function GreetingsDisplayPage() {
         >
           <div className="grid grid-cols-3 max-h-screen mx-20 gap-8 justify-center items-center">
             <video
-              className="absolute top-12"
+              className="col-span-2 w-full aspect-auto max-h-screen top-12"
               src="/DAMUJIN_VIDEO1.mp4"
               autoPlay
               loop
               muted
             />
-            <div className="flex flex-col absolute bottom-12 items-center">
+            <div className="flex flex-col items-center space-y-2">
               <span className="text-xl font-bold">Scan here to greet us</span>
               <div className="p-2 size-auto rounded-2xl border border-border">
                 <Image src="/qr.png" alt="qr" width={500} height={500} />
@@ -213,7 +213,7 @@ export default function GreetingsDisplayPage() {
       </div>
       <div
         className={cn(
-          'z-50 absolute right-0 top-12 p-4 bg-white/10 w-full flex items-center justify-center text-center',
+          'z-50 absolute right-0 bottom-12 p-4 bg-white/10 w-full flex items-center justify-center text-center',
           montserrat.className
         )}
       >
