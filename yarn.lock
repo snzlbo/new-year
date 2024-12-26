@@ -2340,6 +2340,11 @@ cross-spawn@^7.0.0, cross-spawn@^7.0.6:
     shebang-command "^2.0.0"
     which "^2.0.1"
 
+crunker@^2.4.0:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/crunker/-/crunker-2.4.0.tgz#d83ee6d1ba22098d847a66a4a762a5194e1356ac"
+  integrity sha512-3J0aBgLaB8jpGh6o+bisjYzOEkJLYxhnisHXogjY4fxYewh1aVCptWAz7RSTYPncCyxdfA+UaWAM1BrQiZvZgQ==
+
 cssesc@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/cssesc/-/cssesc-3.0.0.tgz#37741919903b868565e1c09ea747445cd18983ee"
