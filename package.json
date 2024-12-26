@@ -19,6 +19,7 @@
     "aws-amplify": "^6.11.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "crunker": "^2.4.0",
     "device-uuid": "^1.0.4",
     "framer-motion": "^11.15.0",
     "graphql": "^16.10.0",
