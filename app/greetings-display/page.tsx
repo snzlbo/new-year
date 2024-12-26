@@ -12,12 +12,22 @@ import { Amplify } from 'aws-amplify'
 import { generateClient } from 'aws-amplify/api'
 import { ThemeProvider } from '@/components/ThemeProvider'
 import Crunker from 'crunker'
+import { TypewriterEffect } from '@/components/text-generate'
+
+import { Montserrat } from 'next/font/google'
+import { cn } from '@/lib/utils'
 
 Amplify.configure(awsmobile)
 const client = generateClient()
+const montserrat = Montserrat({ subsets: ['latin'] })
 
 export default function GreetingsDisplayPage() {
-  const [caption, setCaption] = useState<string>('Happy New Year')
+  const [caption, setCaption] = useState<
+    {
+      text: string
+      className?: string
+    }[]
+  >([{ text: 'Happy' }, { text: 'New' }, { text: 'Year' }])
   const [items, setItems] = useState<Logs[]>([])
   const [audioPlaying, setAudioPlaying] = useState<boolean>(false)
 
@@ -139,7 +149,16 @@ export default function GreetingsDisplayPage() {
   async function audioPlay() {
     if (items.length > 0 && items[0].audioFile) {
       setAudioPlaying(true)
-      setCaption(`Happy New Year ${items[0].username}`)
+      console.log(items[0].username)
+      setCaption([
+        { text: 'Happy' },
+        { text: 'New' },
+        { text: 'Year' },
+        {
+          text: `${items[0].username}!`,
+          className: 'text-blue-500 dark:text-blue-500',
+        },
+      ])
       const mergedBlob = await concatAudioFiles(
         items[0].language as string,
         items[0].audioFile as string
@@ -172,7 +191,9 @@ export default function GreetingsDisplayPage() {
       disableTransitionOnChange
     >
       <div>
-        <div className="size-full max-h-screen z-50">
+        <div
+          className={cn('size-full max-h-screen z-50', montserrat.className)}
+        >
           <div className="grid grid-cols-3 max-h-screen max-w-7xl gap-4 mx-auto justify-center items-center">
             <video
               className="col-span-2 w-full aspect-auto max-h-screen"
@@ -180,8 +201,8 @@ export default function GreetingsDisplayPage() {
               autoPlay
               loop
             />
-            <div className="flex flex-col items-center space-y-8">
-              <span className="text-2xl font-bold">Scan here to greet us</span>
+            <div className="flex flex-col items-center space-y-2">
+              <span className="text-xl font-bold">Scan here to greet us</span>
               <div className="p-2 size-auto rounded-2xl border border-border">
                 <Image src="/qr.svg" alt="qr" width={500} height={500} />
               </div>
@@ -189,6 +210,14 @@ export default function GreetingsDisplayPage() {
           </div>
         </div>
         <Snowfall />
+      </div>
+      <div
+        className={cn(
+          'z-50 absolute right-0 bottom-12 w-full flex items-center justify-center text-center',
+          montserrat.className
+        )}
+      >
+        <TypewriterEffect key={caption.toString()} words={caption} />
       </div>
     </ThemeProvider>
   )

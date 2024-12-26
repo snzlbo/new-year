@@ -13,6 +13,8 @@ export interface TranslationContent {
   toastError: string
   languageLabel: string
   languagePlaceholder: string
+  greeting1: string
+  greeting2: string
 }
 
 export const translations: Record<string, TranslationContent> = {
@@ -29,6 +31,8 @@ export const translations: Record<string, TranslationContent> = {
     toastSuccess: 'Successfully sent!',
     toastError: 'Please enter your name!',
     languagePlaceholder: 'Enter your language',
+    greeting1: 'Have a',
+    greeting2: 'night!',
   },
   ja: {
     title: '新年明けましておめでとう',
@@ -43,5 +47,7 @@ export const translations: Record<string, TranslationContent> = {
     toastSuccess: '送信が成功しました。',
     toastError: 'お名前を入力してください。',
     languagePlaceholder: '言語を入力してください',
+    greeting1: '',
+    greeting2: '夜をお過ごしください！',
   },
 }

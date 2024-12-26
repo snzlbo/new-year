@@ -18,15 +18,24 @@ import { generateClient } from 'aws-amplify/api'
 import { useState } from 'react'
 import { toast } from 'sonner'
 import { useTranslation } from '../context/TranslationContext'
+import { Montserrat } from 'next/font/google'
+import { cn } from '@/lib/utils'
+import Snowfall from 'react-snowfall'
+import { FlipWords } from '@/components/flip-words'
 
 Amplify.configure(awsmobile)
 const client = generateClient()
+const montserrat = Montserrat({ subsets: ['latin'] })
 
 export default function Greetings() {
   const [name, setName] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const { t } = useTranslation()
   const { language, setLanguage } = useTranslation()
+  const words = {
+    en: ['magical', 'joyous', 'sparkling', 'memorable'],
+    ja: ['素敵な', '楽しい', 'きらめく', '思い出に残る'],
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -81,18 +90,25 @@ export default function Greetings() {
       enableSystem
       disableTransitionOnChange
     >
-      <div className="relative max-h-screen h-screen flex flex-col items-center pt-24 w-full px-4 z-40">
-        <div className="w-full max-w-md mx-auto text-center mb-8">
-          <h1 className="text-4xl font-bold mb-2 drop-shadow-lg animate__animated animate__bounceInDown">
-            {t('title')}
-          </h1>
-          <p className="text-2xl font-bold mb-6 animate__animated animate__backInLeft">
-            {t('subtitle')}
-          </p>
+      <div
+        className={cn(
+          'relative max-h-screen h-screen flex flex-col items-center pt-24 w-full px-4 z-40',
+          montserrat.className
+        )}
+      >
+        <div className="w-full mx-auto text-start mb-8">
+          <div className="h-fit flex justify-start items-start px-4">
+            <div className="text-3xl font-normal text-neutral-600 dark:text-neutral-400">
+              <div className="mb-1">{t('title')}</div>
+              {t('greeting1')}
+              <FlipWords words={language === 'en' ? words.en : words.ja} />{' '}
+              {t('greeting2')}
+            </div>
+          </div>
         </div>
 
         <div className="w-full max-w-sm mx-auto">
-          <form onSubmit={handleSubmit} className="space-y-6 ">
+          <form onSubmit={handleSubmit} className="space-y-6 p-4">
             <div className="space-y-2">
               <label>{t('nameLabel')}</label>
               <Input
@@ -152,6 +168,7 @@ export default function Greetings() {
             </Button>
           </form>
         </div>
+        <Snowfall />
       </div>
     </ThemeProvider>
   )
