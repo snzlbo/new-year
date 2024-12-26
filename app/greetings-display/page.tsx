@@ -193,17 +193,17 @@ export default function GreetingsDisplayPage() {
         <div
           className={cn('size-full max-h-screen z-50', montserrat.className)}
         >
-          <div className="grid grid-cols-3 max-h-screen max-w-7xl gap-4 mx-auto justify-center items-center">
+          <div className="flex flex-col space-y-4 max-h-screen max-w-7xl mx-auto justify-center items-center">
             <video
-              className="col-span-2 w-full aspect-auto max-h-screen"
+              className="absolute top-12"
               src="/DAMUJIN_VIDEO1.mp4"
               autoPlay
               loop
             />
-            <div className="flex flex-col items-center space-y-2">
+            <div className="flex flex-col absolute bottom-12 items-center">
               <span className="text-xl font-bold">Scan here to greet us</span>
               <div className="p-2 size-auto rounded-2xl border border-border">
-                <Image src="/qr.svg" alt="qr" width={500} height={500} />
+                <Image src="/qr.png" alt="qr" width={160} height={160} />
               </div>
             </div>
           </div>
@@ -212,7 +212,7 @@ export default function GreetingsDisplayPage() {
       </div>
       <div
         className={cn(
-          'z-50 absolute right-0 bottom-12 w-full flex items-center justify-center text-center',
+          'z-50 absolute right-0 top-12 p-4 bg-white/10 w-full flex items-center justify-center text-center',
           montserrat.className
         )}
       >
