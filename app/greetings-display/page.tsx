@@ -193,17 +193,18 @@ export default function GreetingsDisplayPage() {
         <div
           className={cn('size-full max-h-screen z-50', montserrat.className)}
         >
-          <div className="grid grid-cols-3 max-h-screen max-w-7xl gap-4 mx-auto justify-center items-center">
+          <div className="grid grid-cols-3 max-h-screen mx-20 gap-8 justify-center items-center">
             <video
               className="col-span-2 w-full aspect-auto max-h-screen"
               src="/DAMUJIN_VIDEO1.mp4"
               autoPlay
               loop
+              muted
             />
             <div className="flex flex-col items-center space-y-2">
               <span className="text-xl font-bold">Scan here to greet us</span>
               <div className="p-2 size-auto rounded-2xl border border-border">
-                <Image src="/qr.svg" alt="qr" width={500} height={500} />
+                <Image src="/qr.png" alt="qr" width={500} height={500} />
               </div>
             </div>
           </div>
