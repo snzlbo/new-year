@@ -1,5 +1,5 @@
 'use client'
-import { Logs, STATUS, TYPE } from '@/types/API'
+import { Logs, ModelSortDirection, STATUS, TYPE } from '@/types/API'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 
@@ -37,23 +37,22 @@ export default function GreetingsDisplayPage() {
       variables: {
         filter: { status: { eq: STATUS.not_played } },
         type: TYPE.new_year,
-        sortDirection: 'ASC',
+        sortDirection: 'ASC' as ModelSortDirection.ASC,
       },
     })
     setItems(data.logByDate.items)
   }
 
   const updateToPlayed = async (id: string) => {
-    const { data } = await client.graphql({
+    await client.graphql({
       query: updateLogs,
       variables: {
         input: {
           id: id,
-          status: 'played',
+          status: 'played' as STATUS.played,
         },
       },
     })
-    setItems(data.logByDate.items)
   }
 
   const concatAudioFiles = async (

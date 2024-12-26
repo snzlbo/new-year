@@ -1,10 +1,8 @@
-import type { Config } from 'tailwindcss'
 import tailwindcssAnimate from 'tailwindcss-animate'
-import colors from 'tailwindcss/colors'
 import { default as flattenColorPalette } from 'tailwindcss/lib/util/flattenColorPalette'
 
 /** @type {import('tailwindcss').Config} */
-export default {
+const config = {
   darkMode: ['class'],
   content: [
     './pages/**/*.{js,ts,jsx,tsx,mdx}',
@@ -66,9 +64,11 @@ export default {
     },
   },
   plugins: [tailwindcssAnimate, addVariablesForColors],
-} satisfies Config
+};
 
-function addVariablesForColors({ addBase, theme }: any) {
+export default config;
+
+function addVariablesForColors({ addBase, theme }) {
   const allColors = flattenColorPalette(theme('colors'))
   const newVars = Object.fromEntries(
     Object.entries(allColors).map(([key, val]) => [`--${key}`, val])

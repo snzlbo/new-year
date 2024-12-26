@@ -11,12 +11,11 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { createLogs } from '@/lib/graphql/mutations'
-import { TYPE } from '@/types/API'
+import { LANGUAGE, TYPE } from '@/types/API'
 import { Icon } from '@iconify/react'
 import { Amplify } from 'aws-amplify'
 import { generateClient } from 'aws-amplify/api'
 import { useState } from 'react'
-import { toast } from 'sonner'
 import { useTranslation } from '../context/TranslationContext'
 import { Montserrat } from 'next/font/google'
 import { cn } from '@/lib/utils'
@@ -41,7 +40,6 @@ export default function Greetings() {
     e.preventDefault()
 
     if (name.length < 1) {
-      toast.error('Name must be at least 3 characters')
       return
     }
 
@@ -54,7 +52,7 @@ export default function Greetings() {
           input: {
             type: TYPE.new_year,
             username: name,
-            language,
+            language: language as LANGUAGE,
           },
         },
       })
@@ -77,7 +75,6 @@ export default function Greetings() {
       setName('')
     } catch (error) {
       console.error(error)
-      toast.error('Failed to submit')
     } finally {
       setIsSubmitting(false)
     }
@@ -168,7 +165,7 @@ export default function Greetings() {
             </Button>
           </form>
         </div>
-        <Snowfall />
+        <Snowfall color="#eeeeee" snowflakeCount={100} />
       </div>
     </ThemeProvider>
   )
