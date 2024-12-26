@@ -193,7 +193,7 @@ export default function GreetingsDisplayPage() {
         <div
           className={cn('size-full max-h-screen z-50', montserrat.className)}
         >
-          <div className="grid grid-cols-3 max-h-screen mx-20 gap-8 justify-center items-center">
+          <div className="grid grid-cols-3 max-h-screen mx-12 gap-8 justify-center items-center">
             <video
               className="col-span-2 w-full aspect-auto max-h-screen top-12"
               src="/DAMUJIN_VIDEO1.mp4"
@@ -211,13 +211,15 @@ export default function GreetingsDisplayPage() {
         </div>
         <Snowfall />
       </div>
-      <div
-        className={cn(
-          'z-50 absolute right-0 bottom-12 p-4 bg-white/10 w-full flex items-center justify-center text-center',
-          montserrat.className
-        )}
-      >
-        <TypewriterEffect key={caption.toString()} words={caption} />
+      <div className=" w-full grid grid-cols-3 z-50 absolute right-0 bg-white/10 bottom-12 p-4">
+        <div
+          className={cn(
+            ' col-span-2 p-4 flex items-center justify-center text-center',
+            montserrat.className
+          )}
+        >
+          <TypewriterEffect key={caption.toString()} words={caption} />
+        </div>
       </div>
     </ThemeProvider>
   )
