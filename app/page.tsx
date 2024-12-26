@@ -1,4 +1,4 @@
-import { BackgroundBeams } from "@/components/background-beam";
+import { BackgroundBeams } from '@/components/background-beam'
 
 export default function Home() {
   return (
@@ -10,5 +10,5 @@ export default function Home() {
       </div>
       <BackgroundBeams />
     </div>
-  );
+  )
 }

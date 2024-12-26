@@ -1,4 +1,4 @@
-export type Language = 'EN' | 'JP'
+export type Language = 'en' | 'ja'
 
 export interface TranslationContent {
   title: string
@@ -16,7 +16,7 @@ export interface TranslationContent {
 }
 
 export const translations: Record<string, TranslationContent> = {
-  EN: {
+  en: {
     title: 'Happy New Year',
     subtitle: 'DDAM ALL 🎉',
     nameLabel: 'Name',
@@ -30,7 +30,7 @@ export const translations: Record<string, TranslationContent> = {
     toastError: 'Please enter your name!',
     languagePlaceholder: 'Enter your language',
   },
-  JP: {
+  ja: {
     title: '新年明けましておめでとう',
     subtitle: 'DDAM ALL 🎉',
     nameLabel: '名前',

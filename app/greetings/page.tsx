@@ -18,14 +18,12 @@ import awsmobile from '@/aws-exports'
 import { useTranslation } from '../context/TranslationContext'
 import { TYPE } from '@/types/API'
 import { ThemeProvider } from '@/components/ThemeProvider'
-import { BackgroundBeams } from '@/components/background-beam'
 
 Amplify.configure(awsmobile)
 const client = generateClient()
 
 export default function Greetings() {
   const [name, setName] = useState('')
-  const [inputLanguage, setInputLanguage] = useState<'en' | 'ja'>('en')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const { t } = useTranslation()
   const { language, setLanguage } = useTranslation()
@@ -47,7 +45,7 @@ export default function Greetings() {
           input: {
             type: TYPE.new_year,
             username: name,
-            language: inputLanguage,
+            language,
           },
         },
       })
@@ -96,9 +94,10 @@ export default function Greetings() {
         <div className="w-full max-w-sm mx-auto">
           <form
             onSubmit={handleSubmit}
-            className="space-y-6 p-6 bg-white/10 backdrop-blur-sm rounded-lg"
+            className="space-y-6 p-6 bg-white/5 backdrop-blur-sm rounded-lg"
           >
             <div className="space-y-2">
+              <label>{t('nameLabel')}</label>
               <Input
                 value={name}
                 onChange={(e) => setName(e.target.value)}
@@ -108,18 +107,17 @@ export default function Greetings() {
               />
             </div>
             <div className="space-y-2">
+              <label>{t('languageLabel')}</label>
               <Select
-                defaultValue={inputLanguage}
+                defaultValue={language}
                 onValueChange={(value) => {
-                  setInputLanguage(value as 'en' | 'ja')
+                  setLanguage(value as 'en' | 'ja')
                 }}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Select Language" />
                 </SelectTrigger>
-                <SelectContent
-                  onClick={() => setLanguage(language === 'EN' ? 'JP' : 'EN')}
-                >
+                <SelectContent>
                   <SelectItem value="ja">
                     <div className="flex items-center space-x-2">
                       <Icon icon="emojione:flag-for-japan" />
@@ -141,12 +139,16 @@ export default function Greetings() {
               className="w-full"
               disabled={isSubmitting || name.length < 3}
             >
-              {isSubmitting ? '...' : 'Submit'}
+              <span className="group-hover/modal-btn:translate-x-40 text-center transition duration-500">
+                {isSubmitting ? '...' : 'Submit'}
+              </span>
+              <div className="-translate-x-40 group-hover/modal-btn:translate-x-0 flex items-center justify-center absolute inset-0 transition duration-500 text-white z-20">
+                ✈️
+              </div>
             </Button>
           </form>
         </div>
       </div>
-      <BackgroundBeams />
     </ThemeProvider>
   )
 }

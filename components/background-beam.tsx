@@ -2,7 +2,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
- 
+
 export const BackgroundBeams = React.memo(
   ({ className }: { className?: string }) => {
     const paths = [
@@ -78,7 +78,7 @@ export const BackgroundBeams = React.memo(
             strokeOpacity="0.05"
             strokeWidth="0.5"
           ></path>
- 
+
           {paths.map((path, index) => (
             <motion.path
               key={`path-` + index}
@@ -118,7 +118,7 @@ export const BackgroundBeams = React.memo(
                 <stop offset="100%" stopColor="#AE48FF" stopOpacity="0"></stop>
               </motion.linearGradient>
             ))}
- 
+
             <radialGradient
               id="paint0_radial_242_278"
               cx="0"
@@ -137,5 +137,5 @@ export const BackgroundBeams = React.memo(
     );
   }
 );
- 
+
 BackgroundBeams.displayName = "BackgroundBeams";

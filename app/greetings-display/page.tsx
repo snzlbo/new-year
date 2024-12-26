@@ -11,6 +11,7 @@ import { Amplify } from 'aws-amplify'
 import { generateClient } from 'aws-amplify/api'
 import { ThemeProvider } from '@/components/ThemeProvider'
 import Crunker from 'crunker'
+import { BackgroundBeams } from '@/components/background-beam'
 
 Amplify.configure(awsmobile)
 const client = generateClient()
@@ -138,7 +139,7 @@ export default function GreetingsDisplayPage() {
     if (items.length > 0 && items[0].audioFile) {
       setAudioPlaying(true)
       const mergedBlob = await concatAudioFiles(
-        'ja',
+        items[0].language as string,
         items[0].audioFile as string
       )
       const audioUrl = URL.createObjectURL(mergedBlob)
@@ -168,20 +169,23 @@ export default function GreetingsDisplayPage() {
       enableSystem
       disableTransitionOnChange
     >
-      <div className="grid grid-cols-3 max-h-screen max-w-7xl gap-4 mx-auto justify-center items-center">
-        <video
-          className="col-span-2 w-full aspect-auto max-h-screen"
-          src="/DAMUJIN_VIDEO1.mp4"
-          autoPlay
-          loop
-        />
-        <div className="flex flex-col items-center space-y-8">
-          <span className="text-2xl font-bold">Scan here to greet us</span>
-          <div className="p-2 size-auto rounded-2xl border border-border">
-            <Image src="/qr.svg" alt="qr" width={500} height={500} />
+      <div className="size-full max-h-screen z-50">
+        <div className="grid grid-cols-3 max-h-screen max-w-7xl gap-4 mx-auto justify-center items-center">
+          <video
+            className="col-span-2 w-full aspect-auto max-h-screen"
+            src="/DAMUJIN_VIDEO1.mp4"
+            autoPlay
+            loop
+          />
+          <div className="flex flex-col items-center space-y-8">
+            <span className="text-2xl font-bold">Scan here to greet us</span>
+            <div className="p-2 size-auto rounded-2xl border border-border">
+              <Image src="/qr.svg" alt="qr" width={500} height={500} />
+            </div>
           </div>
         </div>
       </div>
+      <BackgroundBeams />
     </ThemeProvider>
   )
 }
