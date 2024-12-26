@@ -12,6 +12,7 @@ import { generateClient } from 'aws-amplify/api'
 import { ThemeProvider } from '@/components/ThemeProvider'
 import Crunker from 'crunker'
 import { BackgroundBeams } from '@/components/background-beam'
+import { TextGenerateEffect } from '@/components/text-generate'
 
 Amplify.configure(awsmobile)
 const client = generateClient()
@@ -19,6 +20,7 @@ const client = generateClient()
 export default function GreetingsDisplayPage() {
   const [items, setItems] = useState<Logs[]>([])
   const [audioPlaying, setAudioPlaying] = useState<boolean>(false)
+  const [caption, setCaption] = useState<string>('Happy New Year')
 
   const list = async () => {
     const { data } = await client.graphql({
@@ -138,6 +140,7 @@ export default function GreetingsDisplayPage() {
   async function audioPlay() {
     if (items.length > 0 && items[0].audioFile) {
       setAudioPlaying(true)
+      setCaption(`Happy New Year ${items[0].username}`)
       const mergedBlob = await concatAudioFiles(
         items[0].language as string,
         items[0].audioFile as string
@@ -178,9 +181,14 @@ export default function GreetingsDisplayPage() {
             loop
           />
           <div className="flex flex-col items-center space-y-8">
-            <span className="text-2xl font-bold">Scan here to greet us</span>
-            <div className="p-2 size-auto rounded-2xl border border-border">
-              <Image src="/qr.svg" alt="qr" width={500} height={500} />
+            <span key={caption} className="text-4xl font-bold">
+              <TextGenerateEffect words={caption} />
+            </span>
+            <div className="flex flex-col space-y-2 items-center">
+              <span className="text-xl font-bold">Scan here to greet us</span>
+              <div className="p-2 size-auto rounded-2xl border border-border">
+                <Image src="/qr.svg" alt="qr" width={500} height={500} />
+              </div>
             </div>
           </div>
         </div>

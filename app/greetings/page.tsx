@@ -1,7 +1,7 @@
 'use client'
-import { Icon } from '@iconify/react'
-import { useState } from 'react'
-import { Button } from '@/components/ui/button'
+import awsmobile from '@/aws-exports'
+import { ThemeProvider } from '@/components/ThemeProvider'
+import { Button } from '@/components/moving-border'
 import { Input } from '@/components/ui/input'
 import {
   Select,
@@ -10,14 +10,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { toast } from 'sonner'
+import { createLogs } from '@/lib/graphql/mutations'
+import { TYPE } from '@/types/API'
+import { Icon } from '@iconify/react'
 import { Amplify } from 'aws-amplify'
 import { generateClient } from 'aws-amplify/api'
-import { createLogs } from '@/lib/graphql/mutations'
-import awsmobile from '@/aws-exports'
+import { useState } from 'react'
+import { toast } from 'sonner'
 import { useTranslation } from '../context/TranslationContext'
-import { TYPE } from '@/types/API'
-import { ThemeProvider } from '@/components/ThemeProvider'
 
 Amplify.configure(awsmobile)
 const client = generateClient()
@@ -92,10 +92,7 @@ export default function Greetings() {
         </div>
 
         <div className="w-full max-w-sm mx-auto">
-          <form
-            onSubmit={handleSubmit}
-            className="space-y-6 p-6 bg-white/5 backdrop-blur-sm rounded-lg"
-          >
+          <form onSubmit={handleSubmit} className="space-y-6 ">
             <div className="space-y-2">
               <label>{t('nameLabel')}</label>
               <Input
@@ -136,15 +133,22 @@ export default function Greetings() {
             {/* <p className="text-lg text-white text-center">{t('wishText')}</p> */}
             <Button
               type="submit"
-              className="w-full"
-              disabled={isSubmitting || name.length < 3}
+              className="w-full bg-black dark:bg-white dark:text-black text-white flex justify-center relative"
             >
-              <span className="group-hover/modal-btn:translate-x-40 text-center transition duration-500">
-                {isSubmitting ? '...' : 'Submit'}
+              <span
+                className={`${
+                  isSubmitting ? 'translate-x-60' : ''
+                } text-center transition duration-500`}
+              >
+                {'Submit'}
               </span>
-              <div className="-translate-x-40 group-hover/modal-btn:translate-x-0 flex items-center justify-center absolute inset-0 transition duration-500 text-white z-20">
-                ✈️
-              </div>
+              <span
+                className={`${
+                  isSubmitting ? 'translate-x-0' : '-translate-x-60'
+                } flex items-center justify-center absolute inset-0 transition duration-500 text-white z-20`}
+              >
+                🎄
+              </span>
             </Button>
           </form>
         </div>
